@@ -1,0 +1,159 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+
+ 
+<head> 
+   <meta charset="UTF-8"> 
+   <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+   <meta http-equiv="X-UA-Compatible" content="ie=edge"> 
+   <title>Belly Button Biodiversity</title> 
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> 
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> 
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+</head> 
+ 
+ 
+<body> 
+   <div class="page-header"> 
+      <div class = "container" style = "text-align: center;"> 
+          <h1>Belly Button Biodiversity Dashboard</h1> 
+          <h2>Interactive dashboard</h2>
+          <h3>Belly Button Goop</h3> 
+      </div> 
+   </div> 
+ 
+   <div class = "container"> 
+      <td class="dropdown">
+      <label for = "selDataset">Select an ID </label> 
+        
+    <script>
+        
+        // Plot the default route once the page loads
+        var default_url = "sampledictionary";
+        Plotly.d3.json(default_url, function(error, response) {
+            if (error) return console.warn(error);
+            var data = [response];
+            var layout = { margin: { t: 30, b:100 } }
+            Plotly.plot("pie", data, layout)
+        })
+
+        // Update the plot with newdata
+        function updatePlotly(newdata) {
+            var Bar = document.getElementById('bar');
+            Plotly.restyle(Bar, 'x', [newdata.SAMPLEID])
+            Plotly.restyle(Bar, 'y', [newdata.BBTYPE])
+        }
+
+        // Get new data whenever the dropdown selection changes
+        function optionchanged(route("/names")) {
+            console.log(route("/names"));
+            Plotly.d3.json(`/${route("/names")}`, function(error, data) {
+                console.log("newdata", data);
+                updatePlotly(data);
+            });
+        }
+    </script>
+
+        <select id="selDataset" onchange="optionChanged(this.value)"> 
+        <option value="names">names</option>
+        </select>
+
+
+    </div> 
+ 
+   <div class = "container"> 
+     <row> 
+     <div class = "panel panel-primary" style = "width: 150px; height: 150px;"> 
+       <div class = "panel-heading" style = "font-weight: bold; text-align: center; font-size: 16px;">Sample Metadata</div> 
+          <div id = "meta" class = "panel-body"></div> 
+      <select name="Sample Metaddata">
+       function display(route('/metadata/<sample>')) {
+            console.log(route('/metadata/<sample>'));
+            Plotly.d3.json(`/${route('/metadata/<sample>')}`, function(error, data) {
+                console.log("metadata", metadatadictionary);
+                updatePlotly(data);
+            });
+        }
+
+
+          </div> 
+     </div>
+     </row>
+     <row>
+       <div id = "pie"></div> 
+
+
+<script>
+pie_chart = {
+             'data': "otu_descrips"                    ,
+                           'type': 'pie',
+                           'name': "SAMPLEID",
+                           'hoverinfo':'descrip',
+                           'textinfo':'none'
+                      }
+                      ],
+
+             'layout':(
+  updatemenus = list(
+    list(
+      buttons = list(
+        list(method = "restyle",
+             label = "SAMPLEID")
+             }
+
+
+</script>
+     </row> 
+     <row> 
+     <div id = "bubble"></div> 
+    
+     <!Create a Bubble Chart that uses data from your routes `/samples/<sample>` and `/otu` to plot the __Sample Value__ vs the __OTU ID__ for the selected sample.
+
+  * Use the OTU IDs for the x values
+
+  * Use the Sample Values for the y values
+
+  * Use the Sample Values for the marker size
+
+  * Use the OTU IDs for the marker colors
+
+  * Use the OTU Description Data for the text values
+
+  * Use `Plotly.restyle` to update the chart whenever a new sample is selected
+
+    >
+
+
+
+
+     </row>
+     <row>
+     <div id = "gauge"></div> 
+	var chart = c3.generate({
+    
+                 data: {
+        
+                 columns: [
+            
+                     ['wfeq']
+        
+                 ],
+        
+                 type: 'gauge',
+        
+                 onclick: function (d, i) { console.log("onclick", d, i); },
+
+                 onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+        
+                 onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+    
+                 })
+     </row> 
+   </div> 
+ 
+<script src="{{ url_for('static', filename='app.js') }}"></script> 
+
+</body> 
+  
+</html> 
